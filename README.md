@@ -55,7 +55,7 @@ Apps treat any problem (missing key, invalid JSON, invalid semver, empty `update
 
 Direct-channel binaries are published as assets on this repository's GitHub Releases (never in the private source repo):
 
-- Windows direct installer (signed NSIS `ManajerkuPOS-Setup.exe`) plus its `latest.yml`, one release per version (see below).
+- Windows direct installer (NSIS `ManajerkuPOS-Setup.exe`, currently unsigned) plus its `latest.yml`, one release per version (see below).
 - Android APK for `android/direct`.
 
 After publishing a release, set the matching `update_url` to the asset's download URL and bump `latest_version` via PR.
@@ -70,8 +70,8 @@ https://github.com/Infraniaga-Technology-Division/manajerku-pos-releases/release
 
 They never read the GitHub "latest" release (this repo also hosts APK releases) and use no token. Procedure:
 
-1. Build the signed installer in the source repo: `bun run desktop:build:direct` (needs `WIN_CSC_LINK` + `WIN_CSC_KEY_PASSWORD`; fails without a certificate).
+1. Build the installer in the source repo: `bun run desktop:build` (unsigned, current free setup). Once a code-signing certificate is bought, use `bun run desktop:build:direct` instead (needs `WIN_CSC_LINK` + `WIN_CSC_KEY_PASSWORD`; fails without a certificate). Unsigned installs accept a later signed update; after switching to signed builds, keep releasing signed builds under the same publisher name.
 2. Create a release with tag **`windows-v{version}`** (e.g. `windows-v0.4.5`; strict `MAJOR.MINOR.PATCH`, no other suffix) and upload **both** `release/ManajerkuPOS-Setup.exe` and `release/latest.yml` from that same build. Do not rename the `.exe`: `latest.yml` references it by name and its sha512.
 3. Only then open the PR on `version.json`: set `windows/direct.update_url` to the installer download URL (`.../releases/download/windows-v{version}/ManajerkuPOS-Setup.exe`, the fallback for apps that cannot self-update) and `windows/direct.latest_version` to `{version}`.
 
-Apps download in the background once the notice shows and install only when the cashier taps "Restart & Update". If the tag is missing, `latest.yml` names another version, or the signature/sha512 check fails, the button falls back to "Perbarui" (opens `update_url`). Never delete or re-upload assets of a release that `version.json` already points to.
+Apps download in the background once the notice shows and install only when the cashier taps "Restart & Update". If the tag is missing, `latest.yml` names another version, or the sha512 check fails (or, for signed builds, the signature check), the button falls back to "Perbarui" (opens `update_url`). Unsigned installers show a SmartScreen warning only on the first manual install ("More info" → "Run anyway"); in-app updates do not trigger it. Never delete or re-upload assets of a release that `version.json` already points to.
