@@ -1,0 +1,32 @@
+{
+  "android/play": {
+    "latest_version": "0.4.3",
+    "min_version": "",
+    "update_url": "https://play.google.com/store/apps/details?id=com.manajerkupos",
+    "release_notes": ""
+  },
+  "android/direct": {
+    "latest_version": "0.4.3",
+    "min_version": "",
+    "update_url": "",
+    "release_notes": ""
+  },
+  "ios/store": {
+    "latest_version": "0.4.3",
+    "min_version": "",
+    "update_url": "",
+    "release_notes": ""
+  },
+  "windows/store": {
+    "latest_version": "0.4.3",
+    "min_version": "",
+    "update_url": "",
+    "release_notes": ""
+  },
+  "windows/direct": {
+    "latest_version": "0.4.3",
+    "min_version": "",
+    "update_url": "",
+    "release_notes": ""
+  }
+}
